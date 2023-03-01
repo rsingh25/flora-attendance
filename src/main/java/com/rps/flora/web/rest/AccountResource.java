@@ -148,6 +148,14 @@ public class AccountResource {
         userService.changePassword(passwordChangeDto.getCurrentPassword(), passwordChangeDto.getNewPassword());
     }
 
+    @PostMapping(path = "/account/admin-change-password")
+    public void adminChangePassword(@RequestBody PasswordChangeDTO passwordChangeDto) {
+        if (isPasswordLengthInvalid(passwordChangeDto.getNewPassword())) {
+            throw new InvalidPasswordException();
+        }
+        userService.setNewPasswordAdmin(passwordChangeDto.getNewPassword(), passwordChangeDto.getLogin());
+    }
+
     /**
      * {@code POST   /account/reset-password/init} : Send an email to reset the password of the user.
      *
@@ -184,7 +192,7 @@ public class AccountResource {
         }
     }
 
-    private static boolean isPasswordLengthInvalid(String password) {
+    public static boolean isPasswordLengthInvalid(String password) {
         return (
             StringUtils.isEmpty(password) ||
             password.length() < ManagedUserVM.PASSWORD_MIN_LENGTH ||

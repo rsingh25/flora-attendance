@@ -12,6 +12,8 @@ public class PasswordChangeDTO implements Serializable {
     private String currentPassword;
     private String newPassword;
 
+    private String login;
+
     public PasswordChangeDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -35,5 +37,13 @@ public class PasswordChangeDTO implements Serializable {
 
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 }

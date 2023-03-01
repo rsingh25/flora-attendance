@@ -170,6 +170,9 @@ export const UserManagement = () => {
               </td>
               <td className="text-end">
                 <div className="btn-group flex-btn-group-container">
+                  <Button tag={Link} to={`${user.login}/change-password`} color="info" size="sm">
+                    <span className="d-none d-md-inline">Change password</span>
+                  </Button>
                   <Button tag={Link} to={user.login} color="info" size="sm">
                     <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">View</span>
                   </Button>

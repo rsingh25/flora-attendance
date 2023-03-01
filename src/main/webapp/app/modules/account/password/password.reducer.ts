@@ -16,15 +16,22 @@ export type PasswordState = Readonly<typeof initialState>;
 const apiUrl = 'api/account';
 
 interface IPassword {
-  currentPassword: string;
+  currentPassword?: string;
   newPassword: string;
+  login?: string;
 }
 
 // Actions
 
 export const savePassword = createAsyncThunk(
   'password/update_password',
-  async (password: IPassword) => axios.post(`${apiUrl}/change-password`, password),
+  async (password: IPassword) => {
+    if (password.login) {
+      axios.post(`${apiUrl}/admin-change-password`, password);
+    } else {
+      axios.post(`${apiUrl}/change-password`, password);
+    }
+  },
   { serializeError: serializeAxiosError }
 );
 
