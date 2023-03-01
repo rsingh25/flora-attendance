@@ -1,0 +1,52 @@
+{
+  "applications": "*",
+  "changelogDate": "20230301053221",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "attendance_entry",
+  "fields": [
+    {
+      "fieldName": "createdBy",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "lastModifiedBy",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    },
+    {
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "yearMonth",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "attStart",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "attEnd",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "comment",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": true,
+  "name": "AttendanceEntry",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceClass"
+}

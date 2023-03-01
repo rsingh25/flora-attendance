@@ -48,6 +48,8 @@ public class CacheConfiguration {
             createCache(cm, com.rps.flora.domain.User.class.getName());
             createCache(cm, com.rps.flora.domain.Authority.class.getName());
             createCache(cm, com.rps.flora.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.rps.flora.domain.FloraEmployee.class.getName());
+            createCache(cm, com.rps.flora.domain.AttendanceEntry.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }
