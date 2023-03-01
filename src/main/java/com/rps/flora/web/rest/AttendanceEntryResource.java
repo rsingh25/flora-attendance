@@ -6,13 +6,20 @@ import com.rps.flora.service.AttendanceEntryService;
 import com.rps.flora.service.criteria.AttendanceEntryCriteria;
 import com.rps.flora.service.dto.AttendanceEntryDTO;
 import com.rps.flora.web.rest.errors.BadRequestAlertException;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -163,6 +170,47 @@ public class AttendanceEntryResource {
         Page<AttendanceEntryDTO> page = attendanceEntryQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /attendance-entries} : get all the attendanceEntries.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     */
+    @GetMapping("/attendance-entries/download")
+    public void downloadAllAttendanceEntries(AttendanceEntryCriteria criteria, HttpServletResponse servletResponse) throws IOException {
+        log.debug("REST request to download AttendanceEntries by criteria: {}", criteria);
+        List<AttendanceEntryDTO> page = attendanceEntryQueryService.findByCriteria(criteria);
+        servletResponse.setContentType("text/csv");
+        servletResponse.addHeader("Content-Disposition", "attachment; filename=\"report.csv\"");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy-HH:mm");
+        try (CSVPrinter csvPrinter = new CSVPrinter(servletResponse.getWriter(), CSVFormat.DEFAULT)) {
+            csvPrinter.printRecord(
+                "Created By",
+                "Created Date",
+                "Last Modified By",
+                "Last Modified Date",
+                "Year Month",
+                "Att Start",
+                "Att End",
+                "Time (Hrs.)"
+            );
+            for (AttendanceEntryDTO att : page) {
+                csvPrinter.printRecord(
+                    att.getCreatedBy(),
+                    att.getCreatedDate() == null ? "" : att.getCreatedDate().atZone(ZoneId.systemDefault()).format(formatter),
+                    att.getLastModifiedBy(),
+                    att.getLastModifiedDate() == null ? "" : att.getLastModifiedDate().atZone(ZoneId.systemDefault()).format(formatter),
+                    att.getYearMonth(),
+                    att.getAttStart() == null ? "" : att.getAttStart().atZone(ZoneId.systemDefault()).format(formatter),
+                    att.getAttEnd() == null ? "" : att.getAttEnd().atZone(ZoneId.systemDefault()).format(formatter),
+                    att.getAttEnd() != null && att.getAttStart() != null
+                        ? String.format("%.2f", att.getAttStart().until(att.getAttEnd(), ChronoUnit.MINUTES) / 60.0F)
+                        : "",
+                    att.getComment()
+                );
+            }
+        }
     }
 
     /**

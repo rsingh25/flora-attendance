@@ -7,6 +7,7 @@ import UserManagementDetail from './user-management-detail';
 import UserManagementUpdate from './user-management-update';
 import UserManagementDeleteDialog from './user-management-delete-dialog';
 import PasswordPage from './user-management-change-password';
+import AttendanceReport from './user-management-attendance-report';
 
 const UserManagementRoutes = () => (
   <ErrorBoundaryRoutes>
@@ -17,6 +18,7 @@ const UserManagementRoutes = () => (
       <Route path="edit" element={<UserManagementUpdate />} />
       <Route path="delete" element={<UserManagementDeleteDialog />} />
       <Route path="change-password" element={<PasswordPage />} />
+      <Route path="attendance-report" element={<AttendanceReport />} />
     </Route>
   </ErrorBoundaryRoutes>
 );
