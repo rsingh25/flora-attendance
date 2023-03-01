@@ -1,0 +1,33 @@
+entity FloraEmployee {
+    createdBy String maxlength(50),
+    createdDate Instant,
+    lastModifiedBy String maxlength(50),
+    lastModifiedDate Instant,
+    attStartTime1 Instant,
+    attEndTime1 Instant,
+    attStartTime2 Instant,
+    attStartTime2 Instant
+}
+
+entity AttendanceEntry {
+    createdBy String maxlength(50),
+    createdDate Instant,
+    lastModifiedBy String maxlength(50),
+    lastModifiedDate Instant,
+    yearMonth String,
+    attStart Instant,
+    attEnd Instant,
+    comment String
+}
+
+relationship OneToOne {
+    FloraEmployee {internalUser required} to User
+}
+
+paginate * with pagination
+
+filter *
+
+dto * with mapstruct
+
+service all with serviceClass
