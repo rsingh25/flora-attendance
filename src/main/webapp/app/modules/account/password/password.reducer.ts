@@ -27,9 +27,9 @@ export const savePassword = createAsyncThunk(
   'password/update_password',
   async (password: IPassword) => {
     if (password.login) {
-      axios.post(`${apiUrl}/admin-change-password`, password);
+      await axios.post(`${apiUrl}/admin-change-password`, password);
     } else {
-      axios.post(`${apiUrl}/change-password`, password);
+      await axios.post(`${apiUrl}/change-password`, password);
     }
   },
   { serializeError: serializeAxiosError }

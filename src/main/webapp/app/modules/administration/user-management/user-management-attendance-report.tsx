@@ -16,7 +16,7 @@ export const AttendanceReport = () => {
 
   const { login } = useParams<'login'>();
 
-  const handleValidSubmit = ({ yearMon }) => {
+  const handleValidSubmit = () => {
     handleDownload(`api/attendance-entries/download?createdBy.equals=${login}&yearMonth.equals=${yearMon}`, `${login}-${yearMon}.csv`);
   };
 
